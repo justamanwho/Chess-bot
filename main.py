@@ -59,7 +59,7 @@ def show_puzzle(message):
 
     # using PGN you can find solving positions
     pgn = get_current_daily_puzzle().json['puzzle']['pgn']
-    print(pgn)
+
     moves = re.search(r'1\..*\s', pgn).group()
     bot.send_message(message.chat.id, moves, reply_markup=markup)
 
@@ -97,7 +97,7 @@ def give_stats_profile(message):
 
             data = get_player_stats(username).json
             categories = ['chess_bullet', 'chess_blitz', 'chess_rapid', 'chess_daily']
-            print(data["stats"])
+
             for category in categories:
                 if category in data["stats"]:
                     stats = data["stats"][category]
@@ -120,10 +120,9 @@ def give_stats_profile(message):
 
             waiting_for_nick_stats = False
 
-
         elif waiting_for_nick_profile:
-            username = message.text
 
+            username = message.text
             data = get_player_profile(username).json["player"]
 
             if data.get('avatar') is None:

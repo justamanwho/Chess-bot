@@ -40,9 +40,11 @@ def message_reply(message):
 @bot.message_handler(commands=['puzzle'])
 def show_puzzle(message):
 
-    puzzle_image = get_current_daily_puzzle().json['puzzle']['image']
-    bot.send_photo(message.chat.id, puzzle_image)
+    data = get_current_daily_puzzle().json['puzzle']
+    print(data)
+    bot.send_photo(message.chat.id, data['image'])
 
+    bot.send_message(message.chat.id, f'Name of puzzle: {data["title"]}')
     bot.send_message(message.chat.id, 'To show answer use command /solve')
 
     # using FEN you can tell which color makes move b=black w=white
@@ -58,10 +60,11 @@ def show_puzzle(message):
 def show_puzzle(message):
 
     # using PGN you can find solving positions
-    pgn = get_current_daily_puzzle().json['puzzle']['pgn']
+    pgn = get_current_daily_puzzle().json['puzzle']['pgn'].replace('\r\n', ' ')
 
-    moves = re.search(r'1\..*\s', pgn).group()
-    bot.send_message(message.chat.id, moves, reply_markup=markup)
+    # start = re.compile(r'\w\.')
+    start = re.search(r'\w\.', pgn)
+    bot.send_message(message.chat.id, pgn[start.start():], reply_markup=markup)
 
 
 @bot.message_handler(commands=['leaders'])
@@ -103,7 +106,7 @@ def give_stats_profile(message):
                     stats = data["stats"][category]
                     record = stats["record"]
 
-                    # If user played only one game or 0, stats["best"]["rating"] is not exist
+                    # If user has played only one game or 0, stats["best"]["rating"] is not exist
                     bot.send_message(message.chat.id,
                                      f'Category: {category[6:].capitalize()}\n'
                                      f'Current: {stats["last"]["rating"]}\n'

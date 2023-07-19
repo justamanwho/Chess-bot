@@ -61,10 +61,16 @@ def show_puzzle(message):
 
     # using PGN you can find solving positions
     pgn = get_current_daily_puzzle().json['puzzle']['pgn'].replace('\r\n', ' ')
+    pattern = r'\s\d+\.\s'
+    start = re.search(pattern, pgn)
 
-    # start = re.compile(r'\w\.')
-    start = re.search(r'\w\.', pgn)
-    bot.send_message(message.chat.id, pgn[start.start():], reply_markup=markup)
+    length = len(str(start.group())) - 3
+    solve_moves = pgn[start.start():]
+    moves = re.split(pattern, solve_moves)
+
+    for idx, element in enumerate(moves[1:]):
+        move = f'{idx+1}.   {element}'
+        bot.send_message(message.chat.id, move, reply_markup=markup)
 
 
 @bot.message_handler(commands=['leaders'])

@@ -1,5 +1,5 @@
 from telebot import types, TeleBot
-from chessdotcom import get_player_stats, get_player_profile, get_leaderboards, get_current_daily_puzzle
+from chessdotcom import get_player_stats, get_player_profile, get_leaderboards, get_current_daily_puzzle, Client
 import time
 import re
 
@@ -10,6 +10,11 @@ markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 waiting_for_nick_profile = False
 waiting_for_nick_stats = False
 bot = TeleBot(token)
+
+Client.request_config["headers"]["User-Agent"] = (
+    "My Python Application. "
+    "Contact me at email@example.com"
+)
 
 
 @bot.message_handler(commands=['start'])
@@ -41,7 +46,6 @@ def message_reply(message):
 def show_puzzle(message):
 
     data = get_current_daily_puzzle().json['puzzle']
-    print(data)
     bot.send_photo(message.chat.id, data['image'])
 
     bot.send_message(message.chat.id, f'Name of puzzle: {data["title"]}')
@@ -61,10 +65,9 @@ def show_puzzle(message):
 
     # using PGN you can find solving positions
     pgn = get_current_daily_puzzle().json['puzzle']['pgn'].replace('\r\n', ' ')
-    pattern = r'\s\d+\.\s'
+    pattern = r'\s\d+\.{1,3}\s'
     start = re.search(pattern, pgn)
 
-    length = len(str(start.group())) - 3
     solve_moves = pgn[start.start():]
     moves = re.split(pattern, solve_moves)
 

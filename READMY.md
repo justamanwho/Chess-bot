@@ -1,6 +1,8 @@
 #Telegram chess bot
 
-####Bot that can work with user's commands in telegram.
+####Bot that can understand user's commands and send the relevant data back 
+###by checking up with the official chess.com API.
+
 ###Commands: 
 - /stats - shows your stats
 - /start - shows start message with commands
@@ -8,6 +10,7 @@
 - /puzzle - shows today's puzzle
 - /solve - shows solving moves
 - /leaders - shows leaders at categories
+
 ###Links and Sources:
 - telegram bot - https://t.me/chess_info_stats_bot
 - chess.com API tutorial - https://youtu.be/KYNbHGs-qG4

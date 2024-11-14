@@ -1,11 +1,33 @@
+import logging
+
 from telebot import types, TeleBot
 from chessdotcom import get_player_stats, get_player_profile, get_leaderboards, get_current_daily_puzzle, Client
+from dotenv import load_dotenv
 import time
 import re
+import os
 
 
-token = open('token.txt').readline()
-bot_name = 'chess_info_stats_bot'
+logger = logging.getLogger(__name__)
+logger.setLevel('DEBUG')
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel('DEBUG')
+
+file_handler = logging.FileHandler('logs.log')
+file_handler.setLevel('DEBUG')
+
+formatter = logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+console_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
+
+
+load_dotenv('.env')
+token = os.getenv('BOT_TOKEN')
+bot_name = os.getenv('BOT_NAME')
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 waiting_for_nick_profile = False
 waiting_for_nick_stats = False
@@ -27,6 +49,7 @@ def start_message(message):
                                       "puzzle - shows today's puzzle\n"
                                       "solve - shows solving moves\n"
                                       "leaders - shows leaders at categories\n")
+    logger.info('Start message has been sent')
 
 
 @bot.message_handler(commands=['profile', 'stats'])
@@ -40,6 +63,7 @@ def message_reply(message):
         waiting_for_nick_profile = True
 
     bot.reply_to(message, "What's your nickname on Chess.com?", reply_markup=markup)
+    logger.info('Waiting for the reply')
 
 
 @bot.message_handler(commands=['puzzle'])
@@ -59,9 +83,11 @@ def show_puzzle(message):
     else:
         bot.send_message(message.chat.id, 'Black to Move')
 
+    logger.info('Puzzle has been sent')
+
 
 @bot.message_handler(commands=['solve'])
-def show_puzzle(message):
+def solve_puzzle(message):
 
     # using PGN you can find solving positions
     pgn = get_current_daily_puzzle().json['puzzle']['pgn'].replace('\r\n', ' ')
@@ -74,6 +100,8 @@ def show_puzzle(message):
     for idx, element in enumerate(moves[1:]):
         move = f'{idx+1}.   {element}'
         bot.send_message(message.chat.id, move, reply_markup=markup)
+
+    logger.info('Solution has been sent')
 
 
 @bot.message_handler(commands=['leaders'])
@@ -93,6 +121,8 @@ def message_reply(message):
             category_string += f'Rank: {idx + 1} | Username: {entry["username"]}   |   Rating: {entry["score"]}\n'
 
         bot.send_message(message.chat.id, category_string)
+
+    logger.info('Leaders have been sent')
 
 
 # User's data can be without some categories because he didn't play much, so program checks it
@@ -132,6 +162,8 @@ def give_stats_profile(message):
 
             waiting_for_nick_stats = False
 
+            logger.info('Stats have been sent')
+
         elif waiting_for_nick_profile:
 
             username = message.text
@@ -151,9 +183,14 @@ def give_stats_profile(message):
 
             waiting_for_nick_profile = False
 
+            logger.info('Profile has been sent')
+
     except Exception:
-        bot.send_message(message.chat.id, "Username is not exist. Try again")
+        bot.send_message(message.chat.id, "Username does not exist. Try again")
+        logger.warning('Provided username is not correct')
 
 
 if __name__ == '__main__':
+    logger.debug('Started Working')
     bot.infinity_polling()
+    logger.debug('Finished Working')

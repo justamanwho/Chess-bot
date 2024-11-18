@@ -5,3 +5,5 @@ WARNING | __main__ | 2024-11-14 17:20:51 | Provided username is not correct
 DEBUG | __main__ | 2024-11-14 17:22:07 | Started Working
 INFO | __main__ | 2024-11-14 17:22:21 | Puzzle has been sent
 DEBUG | __main__ | 2024-11-14 17:26:18 | Finished Working
+INFO | __main__ | 2024-11-18 21:21:21 | Started Working
+INFO | __main__ | 2024-11-18 21:21:30 | Finished Working

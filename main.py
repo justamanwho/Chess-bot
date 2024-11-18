@@ -1,8 +1,7 @@
-import logging
-
-from telebot import types, TeleBot
 from chessdotcom import get_player_stats, get_player_profile, get_leaderboards, get_current_daily_puzzle, Client
+from telebot import types, TeleBot
 from dotenv import load_dotenv
+import logging
 import time
 import re
 import os
@@ -191,6 +190,6 @@ def give_stats_profile(message):
 
 
 if __name__ == '__main__':
-    logger.debug('Started Working')
+    logger.info('Started Working')
     bot.infinity_polling()
-    logger.debug('Finished Working')
+    logger.info('Finished Working')

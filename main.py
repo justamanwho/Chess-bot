@@ -10,18 +10,13 @@ import os
 logger = logging.getLogger(__name__)
 logger.setLevel('DEBUG')
 
-console_handler = logging.StreamHandler()
-console_handler.setLevel('DEBUG')
-
-file_handler = logging.FileHandler('logs.log')
-file_handler.setLevel('DEBUG')
-
+handlers = [logging.StreamHandler(), logging.FileHandler('logs.log')]
 formatter = logging.Formatter('%(levelname)s | %(name)s | %(asctime)s | %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-console_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
 
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
+for handler in handlers:
+    handler.setLevel('DEBUG')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
 
 
 load_dotenv('.env')

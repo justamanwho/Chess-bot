@@ -1,6 +1,8 @@
 from chessdotcom import get_player_stats, get_player_profile, get_leaderboards, get_current_daily_puzzle, Client
+from flask import Flask, request, jsonify
 from telebot import types, TeleBot
 from dotenv import load_dotenv
+import requests
 import logging
 import time
 import re
@@ -20,17 +22,31 @@ for handler in handlers:
 
 
 load_dotenv('.env')
-token = os.getenv('BOT_TOKEN')
-bot_name = os.getenv('BOT_NAME')
+EMAIL: str = os.getenv('EMAIL')
+TOKEN: str = os.getenv('BOT_TOKEN')
+BOT_NAME: str = os.getenv('BOT_NAME')
+WEBHOOK_URL: str = os.getenv('BOT_WEBHOOK')
+
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 waiting_for_nick_profile = False
 waiting_for_nick_stats = False
-bot = TeleBot(token)
+app = Flask(__name__)
+bot = TeleBot(TOKEN)
+
 
 Client.request_config["headers"]["User-Agent"] = (
     "My Python Application. "
-    "Contact me at dio.kostiuk@gmail.com"
+    "Contact me at {EMAIL}"
 )
+
+
+@app.route(f"/chess-webhook", methods=['POST'])
+def receive_update():
+    update = request.get_json()
+    update = types.Update.de_json(update)
+    bot.process_new_updates([update])
+
+    return jsonify({"status": "ok"}), 200
 
 
 @bot.message_handler(commands=['start'])
@@ -186,5 +202,11 @@ def give_stats_profile(message):
 
 if __name__ == '__main__':
     logger.info('Started Working')
-    bot.infinity_polling()
+
+    # bot.infinity_polling()
+
+    response = requests.get(f"https://api.telegram.org/bot{TOKEN}/setWebhook?url={WEBHOOK_URL}")
+    print(response.json())
+    app.run(host='127.0.0.1', port=8444)
+
     logger.info('Finished Working')

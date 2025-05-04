@@ -1,4 +1,4 @@
-#!/media/myfiles/projects/Chess-bot/venv/bin/python3
+#!/home/john/projects/Chess-bot/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

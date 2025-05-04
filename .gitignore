@@ -1,2 +1,48 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environment directories
+venv/
+env/
+ENV/
+.venv/
+.virtualenv/
+
+# IDEs and editors
+.idea/           # JetBrains IDEs like PyCharm
+.vscode/         # VSCode settings
+*.iml            # IntelliJ IDEA files
+*.swp            # Vim swap files
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+# Python testing and coverage
+.coverage
+.tox/
+.nox/
+*.coverage
+*.hypothesis/
+.coverage.*
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Miscellaneous
+*.bak            # Backup files
+*.tmp            # Temporary files
+
+# Sensitive data
 .env
-venv
+.env.*

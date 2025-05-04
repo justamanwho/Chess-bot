@@ -14,6 +14,7 @@ ENV/
 
 # IDEs and editors
 .idea/           # JetBrains IDEs like PyCharm
+/.idea/
 .vscode/         # VSCode settings
 *.iml            # IntelliJ IDEA files
 *.swp            # Vim swap files

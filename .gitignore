@@ -37,6 +37,7 @@ Desktop.ini
 
 # Logs
 *.log
+logs.log
 
 # Miscellaneous
 *.bak            # Backup files

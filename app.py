@@ -42,9 +42,11 @@ Client.request_config["headers"]["User-Agent"] = (
 
 @app.route(f"/chess-webhook", methods=['POST'])
 def receive_update():
-    update = request.get_json()
-    update = types.Update.de_json(update)
+    update = types.Update.de_json(request.get_json())
+    logger.info('Received update from webhook')
+
     bot.process_new_updates([update])
+    logger.info('Update processed')
 
     return jsonify({"status": "ok"}), 200
 

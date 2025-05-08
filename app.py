@@ -36,7 +36,7 @@ bot = TeleBot(TOKEN)
 
 Client.request_config["headers"]["User-Agent"] = (
     "My Python Application. "
-    "Contact me at {EMAIL}"
+    f"Contact me at {EMAIL}"
 )
 
 

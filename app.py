@@ -22,16 +22,17 @@ for handler in handlers:
 
 
 load_dotenv('.env')
-EMAIL: str = os.getenv('EMAIL')
-TOKEN: str = os.getenv('BOT_TOKEN')
+BOT_WEBHOOK: str = os.getenv('BOT_WEBHOOK')
+BOT_TOKEN: str = os.getenv('BOT_TOKEN')
 BOT_NAME: str = os.getenv('BOT_NAME')
-WEBHOOK_URL: str = os.getenv('BOT_WEBHOOK')
+EMAIL: str = os.getenv('EMAIL')
+
 
 markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 waiting_for_nick_profile = False
 waiting_for_nick_stats = False
+bot = TeleBot(BOT_TOKEN)
 app = Flask(__name__)
-bot = TeleBot(TOKEN)
 
 
 Client.request_config["headers"]["User-Agent"] = (
@@ -207,7 +208,7 @@ if __name__ == '__main__':
 
     # bot.infinity_polling()
 
-    response = requests.get(f"https://api.telegram.org/bot{TOKEN}/setWebhook?url={WEBHOOK_URL}")
+    response = requests.get(f"https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url={BOT_WEBHOOK}")
     print(response.json())
     app.run(host='127.0.0.1', port=8444)
 

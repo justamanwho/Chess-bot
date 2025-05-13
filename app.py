@@ -4,6 +4,7 @@ from telebot import types, TeleBot
 from dotenv import load_dotenv
 import requests
 import logging
+import atexit
 import time
 import re
 import os
@@ -32,7 +33,16 @@ markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 waiting_for_nick_profile = False
 waiting_for_nick_stats = False
 bot = TeleBot(BOT_TOKEN)
+
 app = Flask(__name__)
+logger.info("Website is live")
+
+
+def app_shutdown():
+    logger.info("Website is shut down")
+
+
+atexit.register(app_shutdown)
 
 
 Client.request_config["headers"]["User-Agent"] = (

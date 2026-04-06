@@ -1,6 +1,4 @@
 # Chess-Bot
-
-## Description
 Bot that can understand user's commands and send the relevant data back by checking up with the official chess.com API.
 
 
@@ -13,19 +11,74 @@ Bot that can understand user's commands and send the relevant data back by check
 - /leaders - shows leaders at categories
 
 
-## Installation
+## Setup
+
+### Local Development (polling mode)
 
 1. Clone the repository:
-   git clone https://github.com/justamanwho/Chess-bot.git
+   <br>git clone https://github.com/justamanwho/Chess-bot.git
+   <br>cd Chess-bot
 
-2. Install the required module:
-   pip install -r requirements.txt
 
-3. Add your Telegram bot token:
-   create an .env file or set an environment variable
-   
-5. Run the bot:
-   python3 app.py
+2. Create and activate virtual environment:
+   <br>python -m venv venv
+   <br>source venv/bin/activate
+
+
+3. Install dependencies:
+   <br>pip install -r requirements.txt
+
+
+4. Create a `.env` file with your bot token:
+   <br>BOT_NAME=your_telegram_bot_name
+   <br>BOT_TOKEN=your_telegram_bot_token
+
+
+5. In `app.py`, comment out the webhook section and uncomment `bot.infinity_polling()`.
+
+
+6. Run the bot:
+   <br>python app.py
+
+### Production Setup (webhook mode)
+
+1. Clone the repository on your server:
+   git clone https://github.com/justamanwho/Chess.git
+   <br>cd Chess-bot
+
+
+2. Create and activate virtual environment:
+   <br>python -m venv venv
+   <br>source venv/bin/activate
+
+
+3. Install dependencies:
+   <br>pip install -r requirements.txt
+
+
+4. Create an `.env` file:
+   <br>BOT_NAME=your_telegram_bot_name
+   <br>BOT_TOKEN=your_telegram_bot_token
+   <br>BOT_WEBHOOK=https://yourdomain/chess-webhook
+
+
+5. Copy the systemd service file from the `setup/` directory:
+   <br>sudo cp setup/chess-bot.service /etc/systemd/system/
+
+
+6. Your server must have a public IP or domain. See `setup/webhook-example.py` for an example webhook endpoint 
+   (can be deployed on a portfolio, a website, or any backend).
+
+
+7. Start and enable the service:
+   <br>sudo systemctl daemon-reload
+   <br>sudo systemctl start chess-bot.service
+   <br>sudo systemctl enable chess-bot.service
+
+
+8. Check status and logs:
+   <br>sudo systemctl status chess-bot.service
+   <br>sudo journalctl -u chess-bot.service -f
 
 
 ## Links and Sources:

@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn instance to serve Chess-bot
+After=network.target
+
+[Service]
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user/Chess-bot
+Environment="PATH=/home/ec2-user/Chess-bot/venv/bin"
+ExecStart=/home/ec2-user/Chess-bot/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8444 app:app
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
